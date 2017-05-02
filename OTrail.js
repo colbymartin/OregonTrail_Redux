@@ -70,9 +70,13 @@ Wagon.prototype.healrate = function () {
 
 Wagon.prototype.nextDay = function () {
     this.day++;
+    this.milestraveled = this.milestraveled + (30 * this.distancemult);
     for (let i = 0; i < this.passengers.length; i++) {
         this.passengers[i].hunger = this.passengers[i].hunger + 10;
         this.passengers[i].eat();
+        if (this.passengers[i].smith === true) {
+            this.ammo = this.ammo + 1;
+        }
         if (this.passengers[i].hunger >= 100) {
             this.passengers[i].alive = false;
         }
@@ -113,6 +117,7 @@ function Hunter(name) {
     this.huntprob = 80;
     this.eatmult = 2;
     this.healpercent = 20;
+    this.smith = false;
 
     return this;
 };
@@ -126,6 +131,7 @@ function Doctor(name) {
     this.huntprob = 60;
     this.eatmult = 3;
     this.healpercent = 50;
+    this.smith = false;
 
     return this;
 };
@@ -139,6 +145,7 @@ function Gunsmith(name) {
     this.huntprob = 60;
     this.eatmult = 1;
     this.healpercent = 20;
+    this.smith = true;
 
     return this;
 };
@@ -152,6 +159,7 @@ function Monk(name) {
     this.huntprob = 0;
     this.eatmult = .5;
     this.healpercent = 20;
+    this.smith = false;
 
     return this;
 };
@@ -229,23 +237,15 @@ function Life1() {
     for (; wagon1.ready() !== 0;) {
         wagon1.nextDay();
     }
-    return wagon1.day;
+    return [wagon1.day, wagon1.milestraveled];
 }
 
 function Life2() {
     for (; wagon2.ready() !== 0;) {
         wagon2.nextDay();
     }
-    return wagon2.day;
+    return [wagon2.day, wagon2.milestraveled];
 }
 
 console.log(Life1());
 console.log(Life2());
-
-
-/**
- * TO DO:
- * 
- *  - Add Gunsmith Ammo Ability
- *  - Add Miles Traveled
- */
