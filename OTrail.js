@@ -37,7 +37,12 @@ function Wagon(capacity) {
         this.day++;
         for (let i = 0; i < this.passengers.length; i++) {
             this.passengers[i].hunger = this.passengers[i].hunger + 10;
-            this.passengers[i].eat();
+            if (this.food > 20 && this.passengers[i].sick === true) {
+                this.passengers[i].eat();
+            }
+            if (this.food > 10 && this.passengers[i].sick === false) {
+                this.passengers[i].eat();``
+            }
             if (this.passengers[i].hunger >= 100) {
                 this.passengers[i].alive = false;
             }
@@ -103,7 +108,7 @@ let george = new Traveler('George');
 
 
 let wagon1 = new Wagon(7);
-let wagon2 = new Wagon(6);
+let wagon2 = new Wagon(5);
 let wagon3 = new Wagon(8);
 
 wagon1.join(jerry);
@@ -111,11 +116,33 @@ wagon1.join(elaine);
 wagon1.join(kramer);
 wagon1.join(george);
 
-function Life() {
-    for (let i = 0; wagon1.ready() !== 0; i++) {
+let mac = new Traveler('Mac');
+let frank = new Traveler('Frank');
+let dee = new Traveler('Dee');
+let dennis = new Traveler('Dennis');
+let charlie = new Traveler('Charlie');
+
+wagon2.join(mac);
+wagon2.join(frank);
+wagon2.join(dee);
+wagon2.join(dennis);
+wagon2.join(charlie);
+
+
+
+function Life1() {
+    for (; wagon1.ready() !== 0;) {
         wagon1.next();
     }
     return wagon1.day;
 }
 
-console.log(Life());
+function Life2() {
+    for (; wagon2.ready() !== 0;) {
+        wagon2.next();
+    }
+    return wagon2.day;
+}
+
+console.log(Life1());
+console.log(Life2());
